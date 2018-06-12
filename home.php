@@ -1,3 +1,26 @@
+<?php
+require_once 'vendor/autoload.php';
+
+if(isset($_POST['OAuth'])){
+  $id_token = $_POST['idtoken'];
+}
+else{
+  $id_token = Null;
+}
+$CLIENT_ID = "519089083514-qso15vpicaakl1c5cgejr0tjdrq0vpap.apps.googleusercontent.com";
+
+$client = new Google_Client(['client_id' => $CLIENT_ID]);  // Specify the CLIENT_ID of the app that accesses the backend
+$payload = $client->verifyIdToken($id_token);
+if ($payload) {
+  $userid = $payload['sub'];
+  // If request specified a G Suite domain:
+  //$domain = $payload['hd'];
+  console.log('Signed in as: Null');
+} else {
+  // Invalid ID token
+  echo "<script>console.log('Signed in as: ".$id_token."')</script>";
+}
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,12 +29,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
-
     <title>Offcanvas template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <!-- Custom styles for this template -->
     <link href="offcanvas.css" rel="stylesheet">
@@ -37,7 +60,15 @@
             <a class="nav-link" href="#">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Switch account</a>
+            <a class="nav-link" href="#" onclick="signOut();">Sign out</a>
+            <script>
+              function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                  console.log('User signed out.');
+                });
+              }
+            </script>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
