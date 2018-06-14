@@ -60,15 +60,28 @@
         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not presen
         var xhr = new XMLHttpRequest();
         xhr.open('POST', './oauth.php');
-        xhr.setRequestHeader('OAuth', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-          console.log('Signed in as: ' + xhr.responseText);
-        };
         xhr.send('idtoken=' + id_token);
         xhr.onload = function() {
           console.log('Signed in as: ' + xhr.responseText);
+          window.open('./home.php','_self');
         };
-      }
+
+        var data = "idtoken="+id_token;
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+          if (this.readyState === 4) {
+            console.log(this.responseText);
+          }
+        });
+
+        xhr.open("POST", "http://localhost:8000/Twilio-auto-call/oauth.php");
+        xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader("cache-control", "no-cache");
+        xhr.setRequestHeader('OAuth', 'application/x-www-form-urlencoded');
+        xhr.send(data);      }
     </script>
   </body>
 </html>

@@ -1,24 +1,7 @@
 <?php
-require_once 'vendor/autoload.php';
-
-if(isset($_POST['OAuth'])){
-  $id_token = $_POST['idtoken'];
-}
-else{
-  $id_token = Null;
-}
-$CLIENT_ID = "519089083514-qso15vpicaakl1c5cgejr0tjdrq0vpap.apps.googleusercontent.com";
-
-$client = new Google_Client(['client_id' => $CLIENT_ID]);  // Specify the CLIENT_ID of the app that accesses the backend
-$payload = $client->verifyIdToken($id_token);
-if ($payload) {
-  $userid = $payload['sub'];
-  // If request specified a G Suite domain:
-  //$domain = $payload['hd'];
-  console.log('Signed in as: Null');
-} else {
-  // Invalid ID token
-  echo "<script>console.log('Signed in as: ".$id_token."')</script>";
+session_start();  
+if(!$_SESSION['email']){
+  echo"<script>window.open('./login.php','_self')</script>";
 }
 ?>
 <!doctype html>
@@ -29,7 +12,7 @@ if ($payload) {
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
-    <title>Offcanvas template for Bootstrap</title>
+    <title>Dashboard</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
@@ -38,12 +21,17 @@ if ($payload) {
 
     <!-- Custom styles for this template -->
     <link href="offcanvas.css" rel="stylesheet">
+
+    <meta name="google-signin-client_id" 
+    content="519089083514-54di2to9gc7c5q5k62btjml8vt6tjahg.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    
   </head>
 
   <body class="bg-light">
 
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-      <a class="navbar-brand mr-auto mr-lg-0" href="#">Offcanvas navbar</a>
+      <a class="navbar-brand mr-auto mr-lg-0" href="#"><?=$_SESSION['email']?></a>
       <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -51,7 +39,7 @@ if ($payload) {
       <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Dashboard <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="#">Dashboard <span class="sr-only">(<?=$_SESSION['id']?>)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Notifications</a>
