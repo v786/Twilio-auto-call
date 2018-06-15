@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+
     <meta name="google-signin-client_id" 
     content="519089083514-54di2to9gc7c5q5k62btjml8vt6tjahg.apps.googleusercontent.com">
+    
     <link rel="icon" href="../../../../favicon.ico">
 
     <title>Signin Template for Bootstrap</title>
@@ -53,11 +55,7 @@
     <script type="text/javascript">
       function onSignIn(googleUser) {
         var id_token = googleUser.getAuthResponse().id_token;
-        var profile = googleUser.getBasicProfile();
-        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not presen
+
         var xhr = new XMLHttpRequest();
         xhr.open('POST', './oauth.php');
         xhr.send('idtoken=' + id_token);
@@ -66,22 +64,7 @@
           window.open('./home.php','_self');
         };
 
-        var data = "idtoken="+id_token;
-
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-
-        xhr.addEventListener("readystatechange", function () {
-          if (this.readyState === 4) {
-            console.log(this.responseText);
-          }
-        });
-
-        xhr.open("POST", "http://localhost:8000/Twilio-auto-call/oauth.php");
-        xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-        xhr.setRequestHeader("cache-control", "no-cache");
-        xhr.setRequestHeader('OAuth', 'application/x-www-form-urlencoded');
-        xhr.send(data);      }
+      }
     </script>
   </body>
 </html>
